@@ -3,6 +3,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from 'src/schemas/users.schema';
 import ISearchUserParams from 'src/interface/ISearchUserParams';
+import IUserFind from 'src/interface/IUserFind';
 
 @Injectable()
 export class UsersService {
@@ -23,8 +24,42 @@ export class UsersService {
     return user;
   }
 
-  //   public async findAll(params: ISearchUserParams): Promise<User> {
-  //     const user = await this.UserModel.findById(id).select('-__v');
-  //     return user;
-  //   }
+  public async findAll(params: ISearchUserParams): Promise<IUserFind[]> {
+    const searchQuery = (
+      await this.UserModel.find({
+        $and: [
+          {
+            name: {
+              $regex: params.name !== '' ? new RegExp(params.name) : '',
+              $options: 'i',
+            },
+          },
+          {
+            email: {
+              $regex: params.email !== '' ? new RegExp(params.email) : '',
+              $options: 'i',
+            },
+          },
+          {
+            contactPhone: {
+              $regex:
+                params.contactPhone !== ''
+                  ? new RegExp(params.contactPhone)
+                  : '',
+              $options: 'i',
+            },
+          },
+        ],
+      })
+        .skip(params.offset)
+        .limit(params.limit)
+        .select('-__v -role -password')
+    ).map((item) => ({
+      id: item._doc._id.toString(),
+      email: item._doc.email,
+      name: item._doc.name,
+      contactPhone: item._doc.contactPhone,
+    }));
+    return searchQuery;
+  }
 }

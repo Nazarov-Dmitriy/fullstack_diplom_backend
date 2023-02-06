@@ -13,22 +13,21 @@ export class AuthService {
     email: string,
     password: string,
   ): Promise<IUserValidate | null> {
-    console.log('validateUser');
-    console.log(email);
-    console.log(password);
+    try {
+      const user = await this.usersService.findByEmail(email);
+      const validatePass = await bcrypt.compare(password, user.password);
 
-    const user = await this.usersService.findByEmail(email);
-    const validatePass = await bcrypt.compare(password, user.password);
-
-    if (user && validatePass) {
-      const result = {
-        email: user.email,
-        name: user.name,
-        contactPhone: user.contactPhone,
-        role: user.role,
-      };
-      return result;
+      if (user && validatePass) {
+        const result = {
+          email: user.email,
+          name: user.name,
+          contactPhone: user.contactPhone,
+          role: user.role,
+        };
+        return result;
+      }
+    } catch (e) {
+      return null;
     }
-    return null;
   }
 }
