@@ -5,7 +5,9 @@ import * as passport from 'passport';
 import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    rawBody: true,
+  });
   app.enableCors({
     origin: 'http://localhost:3004',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',

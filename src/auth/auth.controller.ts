@@ -129,7 +129,6 @@ export class AuthController {
   async searchAdmin(@Body() SearchUserParams: ISearchUserParams) {
     try {
       const search = await this.usersService.findAll(SearchUserParams);
-      console.log(search);
 
       return search;
     } catch (e) {

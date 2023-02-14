@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import ICreateUserDto from 'src/interface/ICreateUserDto';
-import User from 'src/interface/IUser';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import IUserValidate from 'src/interface/IUserValidate';

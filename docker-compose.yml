@@ -9,7 +9,9 @@ services:
       - PORT=3000     
     depends_on:      
       - mongo
-      - mongo-express   
+      - mongo-express  
+    volumes:
+      - ./public:/diplom/app/public
    
   mongo:
     image: mongo
