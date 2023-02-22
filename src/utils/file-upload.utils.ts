@@ -1,4 +1,4 @@
-import { extname, join } from 'path';
+import * as path from 'path';
 import * as fs from 'fs';
 
 import { HttpException, HttpStatus } from '@nestjs/common';
@@ -20,30 +20,33 @@ export const imageFileFilter = (req, file, callback) => {
 // Созадние папки фотографий отелья
 export const editFileName = (req, file, callback) => {
   const name = file.originalname.split('.')[0];
-  const fileExtName = extname(file.originalname);
+  const fileExtName = path.extname(file.originalname);
   callback(null, `${name}${fileExtName}`);
 };
 
 export const destination = (req, file, cb) => {
-  const path = join(
+  const pathFile = path.join(
     __dirname,
     '../../',
-    `/public/images/${req.params.id.slice(1)}`,
+    `/public/images/hotel/${req.params.id.slice(1)}`,
   );
-  fs.stat(path, function (err) {
-    if (!err) {
-      return true;
-    } else if (err.code === 'ENOENT') {
-      fs.mkdir(
-        join(__dirname, '../../', `/public/images/${req.params.id.slice(1)}`),
-        (err) => {
-          if (err) {
-            return console.error(err);
-          }
-        },
-      );
-    }
-  });
 
-  cb(null, `./public/images/${req.params.id.slice(1)}`);
+  if (!fs.existsSync(pathFile)) {
+    fs.mkdirSync(pathFile, { recursive: true });
+  }
+
+  cb(null, pathFile);
+};
+
+export const destinationhotelRoom = (req, file, cb) => {
+  const pathFile = path.join(
+    __dirname,
+    '../../',
+    `/public/images/hotel-room/${req.body.id}`,
+  );
+
+  if (!fs.existsSync(pathFile)) {
+    fs.mkdirSync(pathFile, { recursive: true });
+  }
+  cb(null, pathFile);
 };

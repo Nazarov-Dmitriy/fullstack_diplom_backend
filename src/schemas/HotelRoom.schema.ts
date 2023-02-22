@@ -1,12 +1,15 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
+import { Hotel } from './Hotel.schema';
 
 export type HotelRoomDocument = HotelRoom & Document;
 
 @Schema()
 export class HotelRoom {
+  _id: mongoose.Types.ObjectId;
+
   @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'Hotel' })
-  public hotel: mongoose.Schema.Types.ObjectId;
+  public hotel: mongoose.ObjectId;
 
   @Prop()
   public description: string;
@@ -22,6 +25,8 @@ export class HotelRoom {
 
   @Prop({ default: true })
   public isEnabled: boolean;
+
+  _doc: any;
 }
 
 export const HotelRoomSchema = SchemaFactory.createForClass(HotelRoom);

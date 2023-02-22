@@ -10,16 +10,16 @@ import {
   UseFilters,
 } from '@nestjs/common';
 import { deleteCookie } from 'cookies-next';
-import ICreateUserDto from 'src/interface/ICreateUserDto';
-import { UsersService } from 'src/users/users.service';
+import ICreateUserDto from 'src/interface/user/ICreateUserDto';
+import { UsersService } from 'src/module/users/users.service';
 import { AuthService } from './auth.service';
 import * as bcrypt from 'bcrypt';
-import { LocalAuthGuard } from '../guards/local-auth.guard';
-import { AuthenticatedGuard } from '../guards/authentication.guard';
 import { HttpExceptionFilter } from 'src/HttpExceptionFilter/HttpExceptionFilter ';
 import { Roles } from 'src/guards/roles.decorator';
 import { RoleGuard } from 'src/guards/role.guard';
-import ISearchUserParams from 'src/interface/ISearchUserParams';
+import { LocalAuthGuard } from 'src/guards/local-auth.guard';
+import { AuthenticatedGuard } from 'src/guards/authentication.guard';
+import ISearchUserParams from 'src/interface/user/ISearchUserParams';
 
 interface IUser {
   _id?: string;
@@ -129,8 +129,12 @@ export class AuthController {
   async searchAdmin(@Body() SearchUserParams: ISearchUserParams) {
     try {
       const search = await this.usersService.findAll(SearchUserParams);
-
-      return search;
+      return search.map((item) => ({
+        id: item._doc._id.toString(),
+        email: item._doc.email,
+        name: item._doc.name,
+        contactPhone: item._doc.contactPhone,
+      }));
     } catch (e) {
       return e;
     }
@@ -142,7 +146,12 @@ export class AuthController {
   async searchManager(@Body() SearchUserParams: ISearchUserParams) {
     try {
       const search = await this.usersService.findAll(SearchUserParams);
-      return search;
+      return search.map((item) => ({
+        id: item._doc._id.toString(),
+        email: item._doc.email,
+        name: item._doc.name,
+        contactPhone: item._doc.contactPhone,
+      }));
     } catch (e) {
       return e;
     }

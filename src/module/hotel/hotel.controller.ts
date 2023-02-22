@@ -8,10 +8,7 @@ import {
   Query,
   Param,
   Put,
-  Res,
-  Req,
   UseInterceptors,
-  RawBodyRequest,
 } from '@nestjs/common';
 import { AuthenticatedGuard } from 'src/guards/authentication.guard';
 import { RoleGuard } from 'src/guards/role.guard';
@@ -20,8 +17,7 @@ import { HttpExceptionFilter } from 'src/HttpExceptionFilter/HttpExceptionFilter
 import { HotelService } from './hotel.service';
 import SearchHotelParams from 'src/interface/hotel/SearchHotelParams';
 import ICreateHotelDto from './Dto/ICreateHotelDto';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-import { UploadedFile, UploadedFiles } from '@nestjs/common/decorators';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { destination, editFileName } from 'src/utils/file-upload.utils';
 
@@ -55,14 +51,22 @@ export class HotelController {
     return result;
   }
 
-  // @Roles('admin')
-  // @UseGuards(AuthenticatedGuard, RoleGuard)
+  @Roles('admin')
+  @UseGuards(AuthenticatedGuard, RoleGuard)
   @Get('/admin/hotels/:id')
+  async getHotelAdmin(@Param() params: { id: string }) {
+    const hotel = await this.hotelService.findById(params.id);
+    return hotel;
+  }
+
+  @Get('/common/hotel/:id')
   async getHotel(@Param() params: { id: string }) {
     const hotel = await this.hotelService.findById(params.id);
     return hotel;
   }
 
+  @Roles('admin')
+  @UseGuards(AuthenticatedGuard, RoleGuard)
   @Put('/admin/hotels/:id')
   @UseInterceptors(
     FilesInterceptor('files', 10, {
@@ -72,13 +76,7 @@ export class HotelController {
       }),
     }),
   )
-  async putUpdateHotel(
-    @Param() params: { id: string },
-    @Body() body,
-    @UploadedFiles() files: Array<Express.Multer.File>,
-  ) {
-    const filesUrl = files.map((item) => item.originalname);
-    const data = { ...body, files: filesUrl };
-    await this.hotelService.update(params.id.slice(1), data);
+  async putUpdateHotel(@Param() params: { id: string }, @Body() body) {
+    await this.hotelService.update(params.id.slice(1), body);
   }
 }

@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import SearchHotelParams from 'src/interface/hotel/SearchHotelParams';
 import UpdateHotelParams from 'src/interface/hotel/UpdateHotelParams';
 import { Hotel, HotelDocument } from 'src/schemas/Hotel.schema';
-import IHotelService from 'src/interface/hotel/IHotelService';
+import IHotelService from 'src/interface/hotel/HotelService';
 
 @Injectable()
 export class HotelService implements IHotelService {
@@ -48,9 +48,7 @@ export class HotelService implements IHotelService {
           title: data.title,
           description: data.description,
           images:
-            data.imagesSrc.length > 0
-              ? [...data.files, ...data.imagesSrc.split(',')]
-              : [...data.files],
+            data.imagesSrc.length === 0 ? [] : [...data.imagesSrc.split(',')],
           updatedAt: new Date(),
         },
       },

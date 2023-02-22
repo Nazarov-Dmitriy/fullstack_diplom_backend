@@ -1,7 +1,9 @@
+import * as mongoose from 'mongoose';
+
 interface SearchRoomsParams {
   limit: number;
   offset: number;
-  hotel: string;
+  hotel: mongoose.Types.ObjectId | string;
   isEnabled?: boolean;
 }
 
