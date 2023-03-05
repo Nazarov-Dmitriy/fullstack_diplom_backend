@@ -27,6 +27,7 @@ import * as mongoose from 'mongoose';
 import IQueryHoteRoomAdminDto from 'src/interface/hotel/Dto/IQueryHoteRoomAdminDto';
 import { HotelService } from '../hotel/hotel.service';
 import IQueryHoteRoomsDto from 'src/interface/hotel/Dto/IQueryHoteRoomsDto';
+import { ReservationService } from '../reservation/reservation.service';
 
 @UseFilters(new HttpExceptionFilter())
 @Controller('api')
@@ -34,6 +35,7 @@ export class HotelRoomController {
   constructor(
     private readonly hotelRoomService: HotelRoomService,
     private readonly hotelService: HotelService,
+    private readonly reservationService: ReservationService,
   ) {}
 
   @Roles('admin')
@@ -115,6 +117,7 @@ export class HotelRoomController {
 
   @Get('/common/hotel-rooms')
   async searchHotelRooms(@Query() query: IQueryHoteRoomsDto) {
+    let reservations;
     const data = {
       hotel:
         query.id.length === 24 ? new mongoose.Types.ObjectId(query.id) : '',
@@ -130,6 +133,20 @@ export class HotelRoomController {
       hotel: item.hotel,
       images: item.images,
     }));
+
+    if (query.startDate && query.endDate) {
+      reservations = await this.reservationService.getReservations({
+        dateStart: query.startDate,
+        dateEnd: query.endDate,
+      });
+
+      return result.filter(
+        (el) =>
+          reservations.some(
+            (item) => item.roomId.id.toString() === el.id.toString(),
+          ) !== true,
+      );
+    }
     return result;
   }
 

@@ -2,8 +2,8 @@ interface IQueryHoteRoomsDto {
   limit: number;
   offset: number;
   id: string;
-  startData: Date;
-  endData: Date;
+  startDate: Date;
+  endDate: Date;
   isEnabled: boolean;
 }
 

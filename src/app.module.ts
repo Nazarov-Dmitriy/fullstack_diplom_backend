@@ -10,6 +10,11 @@ import { HotelModule } from './module/hotel/hotel.module';
 import { AuthModule } from './module/auth/auth.module';
 import { AuthController } from './module/auth/auth.controller';
 import { AuthService } from './module/auth/auth.service';
+import { ReservationModule } from './module/reservation/reservation.module';
+import { SupportRequestModule } from './module/supportRequest/supportRequest.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { WebSoketModule } from './web-soket/webSoket.module';
+import { SoketGateway } from './web-soket/webSoket.gateway';
 
 @Module({
   imports: [
@@ -25,12 +30,16 @@ import { AuthService } from './module/auth/auth.service';
       rootPath: join(__dirname, '..', 'public'),
       serveRoot: '/public',
     }),
+    EventEmitterModule.forRoot(),
     UsersModule,
     AuthModule,
     HotelModule,
     HotelRoomModule,
+    ReservationModule,
+    SupportRequestModule,
+    WebSoketModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, SoketGateway],
 })
 export class AppModule {}

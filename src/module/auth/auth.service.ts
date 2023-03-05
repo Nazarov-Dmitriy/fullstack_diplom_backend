@@ -17,6 +17,7 @@ export class AuthService {
 
       if (user && validatePass) {
         const result = {
+          id: user._id.toString(),
           email: user.email,
           name: user.name,
           contactPhone: user.contactPhone,

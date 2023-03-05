@@ -12,7 +12,6 @@ import {
 import { deleteCookie } from 'cookies-next';
 import ICreateUserDto from 'src/interface/user/ICreateUserDto';
 import { UsersService } from 'src/module/users/users.service';
-import { AuthService } from './auth.service';
 import * as bcrypt from 'bcrypt';
 import { HttpExceptionFilter } from 'src/HttpExceptionFilter/HttpExceptionFilter ';
 import { Roles } from 'src/guards/roles.decorator';
@@ -20,9 +19,10 @@ import { RoleGuard } from 'src/guards/role.guard';
 import { LocalAuthGuard } from 'src/guards/local-auth.guard';
 import { AuthenticatedGuard } from 'src/guards/authentication.guard';
 import ISearchUserParams from 'src/interface/user/ISearchUserParams';
+import * as mongoose from 'mongoose';
 
 interface IUser {
-  _id?: string;
+  _id: mongoose.Schema.Types.ObjectId;
   email: string;
   password: string;
   name: string;
@@ -33,10 +33,7 @@ interface IUser {
 @UseFilters(new HttpExceptionFilter())
 @Controller('api')
 export class AuthController {
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('/auth/login')
@@ -64,7 +61,7 @@ export class AuthController {
       const { _id, email, name } = user;
 
       return {
-        id: _id,
+        id: _id.toString(),
         email: email,
         name: name,
       };
@@ -94,7 +91,7 @@ export class AuthController {
       const { _id, email, name, contactPhone, role } = user;
 
       return {
-        id: _id,
+        id: _id.toString(),
         email: email,
         name: name,
         contactPhone: contactPhone,

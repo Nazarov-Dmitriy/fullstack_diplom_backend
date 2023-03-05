@@ -16,7 +16,6 @@ export class HotelRoomService implements IHotelRoomService {
   public async create(data: Partial<HotelRoom>): Promise<HotelRoom> {
     const hotelRoom = new this.HotelRoomModel(data);
     await hotelRoom.save();
-    // return hotelRoom.populate('hotel');
     return hotelRoom.populate([
       {
         path: 'hotel',
@@ -88,8 +87,6 @@ export class HotelRoomService implements IHotelRoomService {
     id: string,
     data: Partial<HotelRoom>,
   ): Promise<HotelRoom> {
-    console.log(new mongoose.Types.ObjectId(id));
-
     const holelRoomUpdate = await this.HotelRoomModel.findOneAndUpdate(
       {
         _id: new mongoose.Types.ObjectId(id),

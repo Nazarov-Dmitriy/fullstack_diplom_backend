@@ -1,4 +1,5 @@
 interface IUserValidate {
+  id: string;
   email: string;
   name: string;
   contactPhone: string;
