@@ -20,11 +20,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
     const message = getErrorMessage(exception);
-    // status === 403
-    //   ? (message =
-    //       'Пожалуйста войдите под учетной записью Администратора или Менеджера')
-    //   : '';
-
     response.status(status).json({
       statusCode: status,
       timestamp: new Date().toISOString(),

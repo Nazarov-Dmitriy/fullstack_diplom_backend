@@ -8,11 +8,14 @@ export type SupportRequestDocument = SupportRequest & Document;
 export class SupportRequest {
   _id: mongoose.Types.ObjectId;
 
-  @Prop({ required: true })
+  @Prop({ required: true, ref: 'User' })
   public userId: mongoose.Types.ObjectId;
 
   @Prop({ required: true })
   public createdAt: Date;
+
+  @Prop({ required: true })
+  public theme: string;
 
   @Prop()
   public messages: Message[];

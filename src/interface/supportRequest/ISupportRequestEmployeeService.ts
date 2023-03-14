@@ -4,8 +4,8 @@ import MarkMessagesAsReadDto from './MarkMessagesAsReadDto';
 
 interface ISupportRequestEmployeeService {
   markMessagesAsRead(params: MarkMessagesAsReadDto);
-  getUnreadCount(supportRequest: ID): Promise<Message[]>;
-  closeRequest(supportRequest: ID): Promise<void>;
+  getUnreadCount(supportRequest: string): Promise<Message[]>;
+  closeRequest(supportRequest: string): Promise<void>;
 }
 
 export default ISupportRequestEmployeeService;

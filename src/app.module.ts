@@ -19,7 +19,7 @@ import { SoketGateway } from './web-soket/webSoket.gateway';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot('mongodb://root:example@mongo:27017/', {
+    MongooseModule.forRoot(process.env.MY_CONFIG_MONGODB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }),
@@ -30,7 +30,15 @@ import { SoketGateway } from './web-soket/webSoket.gateway';
       rootPath: join(__dirname, '..', 'public'),
       serveRoot: '/public',
     }),
-    EventEmitterModule.forRoot(),
+    EventEmitterModule.forRoot({
+      wildcard: true,
+      delimiter: '.',
+      newListener: false,
+      removeListener: false,
+      maxListeners: 100,
+      verboseMemoryLeak: false,
+      ignoreErrors: false,
+    }),
     UsersModule,
     AuthModule,
     HotelModule,

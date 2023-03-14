@@ -7,6 +7,8 @@ import {
 } from 'src/schemas/SupportRequest.shema';
 import { ReservationController } from './supportRequest.controller';
 import { SupportRequestClient } from './supportRequestClient.service';
+import SupportRequestEmployeeService from './SupportRequestEmployeeService';
+import { SupportRequestService } from './SupportRequestService';
 
 @Module({
   imports: [
@@ -16,9 +18,10 @@ import { SupportRequestClient } from './supportRequestClient.service';
     ]),
   ],
   controllers: [ReservationController],
-  providers: [SupportRequestClient],
-  exports: [SupportRequestClient],
+  providers: [
+    SupportRequestClient,
+    SupportRequestService,
+    SupportRequestEmployeeService,
+  ],
 })
 export class SupportRequestModule {}
-
-// constructor(private eventEmitter: EventEmitter2) {}

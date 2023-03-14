@@ -1,8 +1,8 @@
-import { ID } from '../ID';
+import * as mongoose from 'mongoose';
 
 interface SendMessageDto {
-  author: ID;
-  supportRequest: ID;
+  author: string | mongoose.Types.ObjectId;
+  supportRequest: string | mongoose.Types.ObjectId;
   text: string;
 }
 

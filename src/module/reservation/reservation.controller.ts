@@ -16,7 +16,6 @@ import { Roles } from 'src/guards/roles.decorator';
 
 import { HttpExceptionFilter } from 'src/HttpExceptionFilter/HttpExceptionFilter ';
 import SearcReservationParams from 'src/interface/reservation/SearcReservationParams';
-import { UsersService } from '../users/users.service';
 import { ReservationService } from './reservation.service';
 
 @UseFilters(new HttpExceptionFilter())

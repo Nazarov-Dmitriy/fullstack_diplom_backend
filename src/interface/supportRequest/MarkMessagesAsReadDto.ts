@@ -1,8 +1,6 @@
-import { ID } from '../ID';
-
 interface MarkMessagesAsReadDto {
-  user: ID;
-  supportRequest: ID;
+  user: string;
+  supportRequest: string;
   createdBefore: Date;
 }
 
