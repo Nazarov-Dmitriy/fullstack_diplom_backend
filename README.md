@@ -25,9 +25,11 @@
 3. запустить локальный файл docker compose  `docker-compose up --build `
 
 # Переменных окружения
-MY_CONFIG_MONGODB_URL = 
-SALT = 
-URL_FRONTEND=
-
+1. Указать url mongodb
+*Пример*: MY_CONFIG_MONGODB_URL = 'mongodb://root:example@mongo:27017/'
+2. Указать salt для хэшированя паролей, рекомендуемое значение 10
+*Пример*:SALT = 10
+3. Указать url backend 
+*Пример*:URL_FRONTEND='http://localhost:3004'
 
 
