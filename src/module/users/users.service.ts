@@ -4,11 +4,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from 'src/schemas/Users.schema';
 import ISearchUserParams from 'src/interface/user/ISearchUserParams';
 import IUserService from 'src/interface/user/IUserService';
+import { create } from 'domain';
 
 @Injectable()
 export class UsersService implements IUserService {
   constructor(@InjectModel(User.name) private UserModel: Model<UserDocument>) {}
-
   public async create(data: Partial<User>): Promise<User> {
     const user = new this.UserModel(data);
     return await user.save();

@@ -32,4 +32,11 @@
 3. Указать url backend 
 *Пример*:URL_FRONTEND='http://localhost:3004'
 
+# Администрато сайта
+При инициализации бд создаеться администратор сайта для бд 'test'
+Для изменения бд docker-entrypoint-initdb.d/mongo-init.js изменить db = conn.getDB('Название бд');
+Логин: admin@mail.ru
+Пароль: admin
+
+
 
